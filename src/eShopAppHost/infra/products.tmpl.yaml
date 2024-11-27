@@ -24,7 +24,11 @@ properties:
       - name: connectionstrings--sqldb
         value: Server=sql,1433;User ID=sa;Password={{ securedParameter "sql_password" }};TrustServerCertificate=true;Database=sqldb
       - name: connectionstrings--openai
-        value: '{{ .Env.OPENAI_CONNECTIONSTRING }}'
+        value: {{ .Env.OPENAI_CONNECTIONSTRING }}
+      - name: connectionstrings--brunolabs1
+        value: 'Hola'
+      - name: connectionstrings--brunolabs2registryendpoint
+        value: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
   template:
     containers:
       - image: {{ .Image }}

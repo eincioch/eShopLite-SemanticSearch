@@ -25,6 +25,10 @@ public class MemoryContext
         _logger = logger;
         _chatClient = chatClient;
         _embeddingClient = embeddingClient;
+
+        _logger.LogInformation("Memory context created");
+        _logger.LogInformation($"Chat Client is null: {_chatClient is null}");
+        _logger.LogInformation($"Embedding Client is null: {_embeddingClient is null}");
     }
 
     public async Task<bool> InitMemoryContextAsync(Context db)
@@ -46,22 +50,32 @@ public class MemoryContext
         // iterate over the products and add them to the memory
         foreach (var product in products)
         {
-            _logger.LogInformation("Adding product to memory: {Product}", product.Name);
-            var productInfo = $"[{product.Name}] is a product that costs [{product.Price}] and is described as [{product.Description}]";
-
-            // new product vector
-            var productVector = new ProductVector
+            try
             {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                ImageUrl = product.ImageUrl
-            };
-            var result = await _embeddingClient.GenerateEmbeddingAsync(productInfo);
-            productVector.Vector = result.Value.ToFloats();
-            var recordId = await _productsCollection.UpsertAsync(productVector);
-            _logger.LogInformation("Product added to memory: {Product} with recordId: {RecordId}", product.Name, recordId);
+                _logger.LogInformation("Adding product to memory: {Product}", product.Name);
+                var productInfo = $"[{product.Name}] is a product that costs [{product.Price}] and is described as [{product.Description}]";
+
+                // new product vector
+                var productVector = new ProductVector
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    ImageUrl = product.ImageUrl
+                };
+                var result = await _embeddingClient.GenerateEmbeddingAsync(productInfo);
+
+                _logger.LogInformation($"Product vector generated - Length: {result.Value.ToFloats().Length}");
+
+                productVector.Vector = result.Value.ToFloats();
+                var recordId = await _productsCollection.UpsertAsync(productVector);
+                _logger.LogInformation("Product added to memory: {Product} with recordId: {RecordId}", product.Name, recordId);
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError(exc, "Error adding product to memory");
+            }
         }
 
         _logger.LogInformation("DONE! Filling products in memory");
