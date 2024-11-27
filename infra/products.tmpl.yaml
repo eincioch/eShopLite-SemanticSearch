@@ -42,6 +42,8 @@ properties:
             value: in_memory
           - name: ConnectionStrings__sqldb
             secretRef: connectionstrings--sqldb
+          - name: ConnectionStrings__azureOpenAI
+            secretRef: connectionstrings--azureOpenAI           
     scale:
       minReplicas: 1
 tags:
