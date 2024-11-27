@@ -14,25 +14,26 @@ namespace Products.Memory;
 public class MemoryContext
 {
     private ILogger _logger;
-    public ChatClient _chatClient;
-    public EmbeddingClient _embeddingClient;
+    public ChatClient? _chatClient;
+    public EmbeddingClient? _embeddingClient;
     public IVectorStoreRecordCollection<int, ProductVector> _productsCollection;
     private string _systemPrompt = "";
     private bool _isMemoryCollectionInitialized = false;
 
-    public async Task InitMemoryContextAsync(ILogger logger, IConfiguration config, Context db, ChatClient chatClient, EmbeddingClient embeddingClient)
+    public async Task InitMemoryContextAsync(ILogger logger, IConfiguration config, Context db, ChatClient? chatClient, EmbeddingClient? embeddingClient)
     {
         _logger = logger;
         _chatClient = chatClient;
         _embeddingClient = embeddingClient;
 
-
+        _logger.LogInformation("Initializing memory context");
         var vectorProductStore = new InMemoryVectorStore();
         _productsCollection = vectorProductStore.GetCollection<int, ProductVector>("products");
         await _productsCollection.CreateCollectionIfNotExistsAsync();
 
-        // create chat history
+        // define system prompt
         _systemPrompt = "You are a useful assistant. You always reply with a short and funny message. If you do not know an answer, you say 'I don't know that.' You only answer questions related to outdoor camping products. For any other type of questions, explain to the user that you only answer outdoor camping products questions. Do not store memory of the chat conversation.";
+        _logger.LogInformation("Done. Initializing memory context");
     }
 
     internal async Task<bool> FillMemoryProducts(Context db) 
