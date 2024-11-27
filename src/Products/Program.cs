@@ -26,34 +26,39 @@ builder.AddAzureOpenAIClient(azureOpenAiClientName);
 // get azure openai client and create Chat client from aspire hosting configuration
 builder.Services.AddSingleton<ChatClient>(serviceProvider =>
 {
-    var config = serviceProvider.GetService<IConfiguration>()!;
-    if (string.IsNullOrEmpty(config["AI_ChatDeploymentName"]))
-    {
-        config["AI_ChatDeploymentName"] = "chat";
-    }
-
+    var chatDeploymentName = "gpt-4o-mini";
     var logger = serviceProvider.GetService<ILogger<Program>>()!;
-    logger.LogInformation($"Chat client configuration, modelId: {config["AI_ChatDeploymentName"]}");
+    logger.LogInformation($"Chat client configuration, modelId: {chatDeploymentName}");
+    ChatClient chatClient = null;
+    try
+    {
+        OpenAIClient client = serviceProvider.GetRequiredService<OpenAIClient>();
+        chatClient = client.GetChatClient(chatDeploymentName);
 
-    OpenAIClient client = serviceProvider.GetRequiredService<OpenAIClient>();
-    var chatClient = client.GetChatClient(config["AI_ChatDeploymentName"]);
+    }
+    catch (Exception exc)
+    {
+        logger.LogError(exc, "Error creating embeddings client");
+    }
     return chatClient;
 });
 
 // get azure openai client and create embedding client from aspire hosting configuration
 builder.Services.AddSingleton<EmbeddingClient>(serviceProvider =>
 {
-    var config = serviceProvider.GetService<IConfiguration>()!;
-    if (string.IsNullOrEmpty(config["AI_EmbeddingsDeploymentName"]))
-    {
-        config["AI_EmbeddingsDeploymentName"] = "embeddings";
-    }
-
+    var embeddingsDeploymentName = "text-embedding-ada-002";
     var logger = serviceProvider.GetService<ILogger<Program>>()!;
-    logger.LogInformation($"Embeddings client configuration, modelId: {config["AI_EmbeddingsDeploymentName"]}");
-
-    OpenAIClient client = serviceProvider.GetRequiredService<OpenAIClient>();
-    var embeddingsClient = client.GetEmbeddingClient(config["AI_EmbeddingsDeploymentName"]);
+    logger.LogInformation($"Embeddings client configuration, modelId: {embeddingsDeploymentName}");
+    EmbeddingClient embeddingsClient = null;
+    try
+    {
+        OpenAIClient client = serviceProvider.GetRequiredService<OpenAIClient>();
+        embeddingsClient = client.GetEmbeddingClient(embeddingsDeploymentName);
+    }
+    catch (Exception exc)
+    {
+        logger.LogError(exc, "Error creating embeddings client");
+    }
     return embeddingsClient;
 });
 

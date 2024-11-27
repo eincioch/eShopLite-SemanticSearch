@@ -2,8 +2,8 @@ using Microsoft.Extensions.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var chatDeploymentName = "chat";
-var embeddingsDeploymentName = "embeddings";
+var chatDeploymentName = "gpt-4o-mini";
+var embeddingsDeploymentName = "text-embedding-ada-002";
 var azureOpenAI = builder.AddAzureOpenAI("azureOpenAI")
     .AddDeployment(new AzureOpenAIDeployment(chatDeploymentName,
     "gpt-4o-mini",
@@ -23,12 +23,10 @@ var products = builder.AddProject<Projects.Products>("products")
 
 // check if working in dev environment
 // remove the if, if you want to use the references also in development
-//if (!builder.Environment.IsDevelopment())
-//{
-    products.WithReference(azureOpenAI);
-    products.WithEnvironment("AI_ChatDeploymentName", chatDeploymentName);
-    products.WithEnvironment("AI_EmbeddingsDeploymentName", embeddingsDeploymentName);
-//}
+if (!builder.Environment.IsDevelopment())
+{
+    products.WithReference(azureOpenAI);    
+}
 
 var store = builder.AddProject<Projects.Store>("store")
     .WithReference(products)

@@ -35,7 +35,7 @@ public class MemoryContext
         _systemPrompt = "You are a useful assistant. You always reply with a short and funny message. If you do not know an answer, you say 'I don't know that.' You only answer questions related to outdoor camping products. For any other type of questions, explain to the user that you only answer outdoor camping products questions. Do not store memory of the chat conversation.";
     }
 
-    internal async void FillMemoryProducts(Context db) 
+    internal async Task<bool> FillMemoryProducts(Context db) 
     { 
         _logger.LogInformation("Get a copy of the list of products");
         // get a copy of the list of products
@@ -65,13 +65,14 @@ public class MemoryContext
         }
 
         _logger.LogInformation("DONE! Filling products in memory");
+        return true;
     }
 
     public async Task<SearchResponse> Search(string search, Context db)
     {
         if(!_isMemoryCollectionInitialized)
         {
-            FillMemoryProducts(db);
+            await FillMemoryProducts(db);
             _isMemoryCollectionInitialized = true;
         }
 
