@@ -4,7 +4,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var chatDeploymentName = "gpt-4o-mini";
 var embeddingsDeploymentName = "text-embedding-ada-002";
-var azureOpenAI = builder.AddAzureOpenAI("azureOpenAI")
+var azureopenai = builder.AddAzureOpenAI("azureopenai")
     .AddDeployment(new AzureOpenAIDeployment(chatDeploymentName,
     "gpt-4o-mini",
     "2024-07-18",
@@ -25,7 +25,7 @@ var products = builder.AddProject<Projects.Products>("products")
 // remove the if, if you want to use the references also in development
 if (!builder.Environment.IsDevelopment())
 {
-    products.WithReference(azureOpenAI);    
+    products.WithReference(azureopenai);
 }
 
 var store = builder.AddProject<Projects.Store>("store")

@@ -75,7 +75,7 @@ From a Terminal window, open the folder with the clone of this repo and run the 
 
 1. This is an example of the command output:
 
-![Deploy Azure Complete](./images/15DeployAzureComplete.png)
+![Deploy Azure Complete](./images/20AzdUpConsoleComplete.png)
 
 1. **Coming Soon!** You can check this video with a 5 minutes overview of the deploy process from codespaces: [Deploy Your **eShopLite - Semantic Search** to Azure in Minutes!]().
 
@@ -127,7 +127,7 @@ Add a user secret with the configuration:
 
 ```bash
 {
-  "ConnectionStrings:azureOpenAIDev": "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
+  "ConnectionStrings:azureopenaidev": "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
 }
 ```
 
@@ -135,7 +135,7 @@ The `Products` project add the Azure OpenAI clients using the configuration from
 
 ```csharp
 // Add Azure OpenAI client
-var azureOpenAiClientName = builder.Environment.IsDevelopment() ? "azureOpenAIDev" : "azureOpenAI";
+var azureOpenAiClientName = builder.Environment.IsDevelopment() ? "azureopenaidev" : "azureopenai";
 builder.AddAzureOpenAIClient(azureOpenAiClientName);
 ```
 
@@ -143,7 +143,7 @@ to this:
 
 ```csharp
 // Add Azure OpenAI client
-var azureOpenAiClientName = "azureOpenAI";
+var azureOpenAiClientName = "azureopenai";
 builder.AddAzureOpenAIClient(azureOpenAiClientName);
 ```
 
