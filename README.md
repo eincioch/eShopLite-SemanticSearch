@@ -77,7 +77,7 @@ From a Terminal window, open the folder with the clone of this repo and run the 
 
 ![Deploy Azure Complete](./images/15DeployAzureComplete.png)
 
-WIP >> 1. You can check this video with a 5 minutes overview of the deploy process from codespaces: [Deploy Your AI Traffic Jam Analyzer to Azure in Minutes! 🚦🚀](https://youtu.be/rM0AdkoCWn0).
+WIP >> 1. You can check this video with a 5 minutes overview of the deploy process from codespaces: [Deploy Your **eShopLite - Semantic Search** to Azure in Minutes!](https://youtu.be/rM0AdkoCWn0).
 
 ### GitHub CodeSpaces
 
