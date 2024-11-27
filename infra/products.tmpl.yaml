@@ -23,8 +23,8 @@ properties:
     secrets:
       - name: connectionstrings--sqldb
         value: Server=sql,1433;User ID=sa;Password={{ securedParameter "sql_password" }};TrustServerCertificate=true;Database=sqldb
-      - name: connectionstrings--azureOpenAI
-        value: '{{ .Env.AZUREOPENAI_CONNECTIONSTRING }}'        
+      - name: connectionstrings--openai
+        value: '{{ .Env.OPENAI_CONNECTIONSTRING }}'
   template:
     containers:
       - image: {{ .Image }}
@@ -44,8 +44,8 @@ properties:
             value: in_memory
           - name: ConnectionStrings__sqldb
             secretRef: connectionstrings--sqldb
-          - name: ConnectionStrings__azureOpenAI
-            secretRef: connectionstrings--azureOpenAI           
+          - name: ConnectionStrings__openai
+            secretRef: connectionstrings--openai
     scale:
       minReplicas: 1
 tags:

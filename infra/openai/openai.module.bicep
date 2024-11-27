@@ -5,12 +5,12 @@ param principalId string
 
 param principalType string
 
-resource azureOpenAI 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
-  name: take('azureOpenAI-${uniqueString(resourceGroup().id)}', 64)
+resource openai 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
+  name: take('openai-${uniqueString(resourceGroup().id)}', 64)
   location: location
   kind: 'OpenAI'
   properties: {
-    customSubDomainName: toLower(take(concat('azureOpenAI', uniqueString(resourceGroup().id)), 24))
+    customSubDomainName: toLower(take(concat('openai', uniqueString(resourceGroup().id)), 24))
     publicNetworkAccess: 'Enabled'
     disableLocalAuth: true
   }
@@ -18,18 +18,18 @@ resource azureOpenAI 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
     name: 'S0'
   }
   tags: {
-    'aspire-resource-name': 'azureOpenAI'
+    'aspire-resource-name': 'openai'
   }
 }
 
-resource azureOpenAI_CognitiveServicesOpenAIContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(azureOpenAI.id, principalId, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a001fd3d-188f-4b5d-821b-7da978bf7442'))
+resource openai_CognitiveServicesOpenAIContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(openai.id, principalId, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a001fd3d-188f-4b5d-821b-7da978bf7442'))
   properties: {
     principalId: principalId
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a001fd3d-188f-4b5d-821b-7da978bf7442')
     principalType: principalType
   }
-  scope: azureOpenAI
+  scope: openai
 }
 
 resource gpt_4o_mini 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
@@ -45,7 +45,7 @@ resource gpt_4o_mini 'Microsoft.CognitiveServices/accounts/deployments@2024-10-0
     name: 'GlobalStandard'
     capacity: 10
   }
-  parent: azureOpenAI
+  parent: openai
 }
 
 resource text_embedding_ada_002 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01' = {
@@ -61,10 +61,10 @@ resource text_embedding_ada_002 'Microsoft.CognitiveServices/accounts/deployment
     name: 'Standard'
     capacity: 8
   }
-  parent: azureOpenAI
+  parent: openai
   dependsOn: [
     gpt_4o_mini
   ]
 }
 
-output connectionString string = 'Endpoint=${azureOpenAI.properties.endpoint}'
+output connectionString string = 'Endpoint=${openai.properties.endpoint}'

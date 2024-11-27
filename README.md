@@ -127,7 +127,7 @@ Add a user secret with the configuration:
 
 ```bash
 {
-  "ConnectionStrings:azureopenaidev": "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
+  "ConnectionStrings:openaidev": "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
 }
 ```
 
@@ -135,7 +135,7 @@ The `Products` project add the Azure OpenAI clients using the configuration from
 
 ```csharp
 // Add Azure OpenAI client
-var azureOpenAiClientName = builder.Environment.IsDevelopment() ? "azureopenaidev" : "azureopenai";
+var azureOpenAiClientName = builder.Environment.IsDevelopment() ? "openaidev" : "openai";
 builder.AddAzureOpenAIClient(azureOpenAiClientName);
 ```
 
@@ -143,7 +143,7 @@ to this:
 
 ```csharp
 // Add Azure OpenAI client
-var azureOpenAiClientName = "azureopenai";
+var azureOpenAiClientName = "openai";
 builder.AddAzureOpenAIClient(azureOpenAiClientName);
 ```
 

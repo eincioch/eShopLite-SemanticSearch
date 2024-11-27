@@ -40,8 +40,8 @@ module resources 'resources.bicep' = {
   }
 }
 
-module azureOpenAI 'azureOpenAI/azureOpenAI.module.bicep' = {
-  name: 'azureOpenAI'
+module openai 'openai/openai.module.bicep' = {
+  name: 'openai'
   scope: rg
   params: {
     location: location
@@ -59,5 +59,5 @@ output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = resources.outputs.AZURE_CO
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN
 output SERVICE_SQL_VOLUME_ESHOPAPPHOSTC8479139E4SQLDATA_NAME string = resources.outputs.SERVICE_SQL_VOLUME_ESHOPAPPHOSTC8479139E4SQLDATA_NAME
-output AZUREOPENAI_CONNECTIONSTRING string = azureOpenAI.outputs.connectionString
+output OPENAI_CONNECTIONSTRING string = openai.outputs.connectionString
 output AZURE_VOLUMES_STORAGE_ACCOUNT string = resources.outputs.AZURE_VOLUMES_STORAGE_ACCOUNT
