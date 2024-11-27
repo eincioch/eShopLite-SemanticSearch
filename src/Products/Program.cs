@@ -29,7 +29,7 @@ builder.Services.AddSingleton<ChatClient>(serviceProvider =>
     var config = serviceProvider.GetService<IConfiguration>()!;
     if (string.IsNullOrEmpty(config["AI_ChatDeploymentName"]))
     {
-        config["AI_ChatDeploymentName"] = "gpt-4o-mini";
+        config["AI_ChatDeploymentName"] = "chat";
     }
 
     var logger = serviceProvider.GetService<ILogger<Program>>()!;
@@ -46,7 +46,7 @@ builder.Services.AddSingleton<EmbeddingClient>(serviceProvider =>
     var config = serviceProvider.GetService<IConfiguration>()!;
     if (string.IsNullOrEmpty(config["AI_EmbeddingsDeploymentName"]))
     {
-        config["AI_EmbeddingsDeploymentName"] = "text-embedding-ada-002";
+        config["AI_EmbeddingsDeploymentName"] = "embeddings";
     }
 
     var logger = serviceProvider.GetService<ILogger<Program>>()!;

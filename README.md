@@ -35,11 +35,11 @@ This is the eShopLite Aplication running, performing a **Semantic Search**:
 
 The Aspire Dashboard to check the running services:
 
-![Aspire Dashboard to check the running services](./images/05AspireDashboard.png)
+![Aspire Dashboard to check the running services](./images/10AzureResources.png)
 
 The Azure Resource Group with all the deployed services:
 
-![Azure Resource Group with all the deployed services](./images/08AzureResourceGroups.png)
+![Azure Resource Group with all the deployed services](./images/15AspireDashboard.png)
 
 ## Architecture diagram
 
@@ -47,7 +47,7 @@ The Azure Resource Group with all the deployed services:
 
 ## Getting Started
 
-The solution is in the src folder, the main solution is **[eShopLite-Aspire.sln](./src/eShopLite-Aspire.sln)**.
+The solution is in the `src` folder, the main solution is **[eShopLite-Aspire.sln](./src/eShopLite-Aspire.sln)**.
 
 ## Deploying
 
@@ -119,11 +119,7 @@ cd ./src/eShopAppHost/
 dotnet run
 ```
 
-- You can expect an output similar to this one:
-
-![Run solution console output](./images/20DotNetRunAppHost.png)
-
-### Local development using an existing gpt-4o model
+### Local development using an existing gpt-4o-mini and ada-002 model
 
 In order to use existing models: gpt-4o-mini and text-embedding-ada-002, you need to define the specific connection string in the `Products` project.
 

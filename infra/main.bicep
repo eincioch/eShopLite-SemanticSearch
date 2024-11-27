@@ -40,17 +40,8 @@ module resources 'resources.bicep' = {
   }
 }
 
-module aoaiAda001 'aoaiAda001/aoaiAda001.module.bicep' = {
-  name: 'aoaiAda001'
-  scope: rg
-  params: {
-    location: location
-    principalId: resources.outputs.MANAGED_IDENTITY_PRINCIPAL_ID
-    principalType: 'ServicePrincipal'
-  }
-}
-module aoaiGpt4o 'aoaiGpt4o/aoaiGpt4o.module.bicep' = {
-  name: 'aoaiGpt4o'
+module azureOpenAI 'azureOpenAI/azureOpenAI.module.bicep' = {
+  name: 'azureOpenAI'
   scope: rg
   params: {
     location: location
@@ -68,6 +59,5 @@ output AZURE_CONTAINER_APPS_ENVIRONMENT_NAME string = resources.outputs.AZURE_CO
 output AZURE_CONTAINER_APPS_ENVIRONMENT_ID string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_ID
 output AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN string = resources.outputs.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN
 output SERVICE_SQL_VOLUME_ESHOPAPPHOSTC8479139E4SQLDATA_NAME string = resources.outputs.SERVICE_SQL_VOLUME_ESHOPAPPHOSTC8479139E4SQLDATA_NAME
-output AOAIADA001_CONNECTIONSTRING string = aoaiAda001.outputs.connectionString
-output AOAIGPT4O_CONNECTIONSTRING string = aoaiGpt4o.outputs.connectionString
+output AZUREOPENAI_CONNECTIONSTRING string = azureOpenAI.outputs.connectionString
 output AZURE_VOLUMES_STORAGE_ACCOUNT string = resources.outputs.AZURE_VOLUMES_STORAGE_ACCOUNT
