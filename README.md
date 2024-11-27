@@ -81,13 +81,13 @@ From a Terminal window, open the folder with the clone of this repo and run the 
 
 ### GitHub CodeSpaces
 
-1. Create a new  Codespace using the `Code` button at the top of the repository.
+- Create a new  Codespace using the `Code` button at the top of the repository.
 
 ![create Codespace](./images/25CreateCodeSpaces.png)
 
-1. The Codespace creation process can take a couple of minutes.
+- The Codespace creation process can take a couple of minutes.
 
-1. Once the Codespace is loaded, it should have all the necessary requirements to deploy the solution.
+- Once the Codespace is loaded, it should have all the necessary requirements to deploy the solution.
 
 ### Run Locally
 
