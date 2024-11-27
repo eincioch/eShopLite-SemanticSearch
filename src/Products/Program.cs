@@ -82,7 +82,7 @@ app.MapProductEndpoints();
 app.UseStaticFiles();
 
 // log Azure OpenAI resources
-app.Logger.LogInformation($"Azure OpenAI resources\n >> OpenAI Chat Client Name: {openAiChatClientName}\n >> OpenAI Embeddings Client Name: {openAiEmbeddingsClientName}");
+app.Logger.LogInformation($"Azure OpenAI resources\n >> OpenAI Client Name: {azureOpenAiClientName}");
 
 // manage db
 using (var scope = app.Services.CreateScope())

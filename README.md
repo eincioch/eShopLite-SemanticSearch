@@ -27,11 +27,11 @@
 
 This is the eShopLite Aplication running, performing a **Keyword Search**:
 
-![eShopLite Aplication running doing search using keyworkd search](./images/01CameraTrafficJam.png)
+![eShopLite Aplication running doing search using keyworkd search](./images/05eShopLite-SearchKeyWord.gif)
 
 This is the eShopLite Aplication running, performing a **Semantic Search**:
 
-![eShopLite Aplication running doing search using keyworkd search](./images/01CameraTrafficJam.png)
+![eShopLite Aplication running doing search using keyworkd search](./images/06eShopLite-SearchSemantic.gif)
 
 The Aspire Dashboard to check the running services:
 
@@ -132,7 +132,7 @@ Add a user secret with the configuration:
 ```bash
 {
   "ConnectionStrings:azureOpenAIDev": "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
-
+}
 ```
 
 The `Products` project add the Azure OpenAI clients using the configuration from the User Secrets in the Dev Environment. If you want to use the services provided by the `AppHost`, open the the `program.cs`, and change this:

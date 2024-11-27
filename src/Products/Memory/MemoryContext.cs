@@ -91,7 +91,7 @@ public class MemoryContext
 
             // search the vector database for the most similar product        
             var searchResults = await _productsCollection.VectorizedSearchAsync(vectorSearchQuery, searchOptions);
-
+            double searchScore = 0.0;
             await foreach (var searchItem in searchResults.Results)
             {
                 if (searchItem.Score > 0.4)
@@ -106,12 +106,14 @@ public class MemoryContext
                         ImageUrl = searchItem.Record.ImageUrl
                     };
 
+                    searchScore = searchItem.Score.Value;
                     responseText = $"The product [{firstProduct.Name}] fits with the search criteria [{search}][{searchItem.Score.Value.ToString("0.00")}]";
+                    _logger.LogInformation($"Search Response: {responseText}");
                 }
             }
 
             // let's improve the response message
-            var prompt = @$"You are an intelligent assistant helping Contoso Inc clients with their search about outdoor product. Generate a catchy and friendly message using the following information:
+            var prompt = @$"You are an intelligent assistant helping clients with their search about outdoor products. Generate a catchy and friendly message using the following information:
     - User Question: {search}
     - Found Product Name: {firstProduct.Name}
     - Found Product Description: {firstProduct.Description}
