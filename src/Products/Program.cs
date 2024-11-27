@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using OpenAI;
 using OpenAI.Chat;
 using OpenAI.Embeddings;
@@ -70,7 +71,9 @@ builder.Services.AddSingleton<IConfiguration>(sp =>
 // add memory context
 builder.Services.AddSingleton(sp =>
 {
-    return new MemoryContext();
+    var logger = sp.GetService<ILogger<Program>>();
+    logger.LogInformation("Creating memory context");
+    return new MemoryContext(logger, sp.GetService<ChatClient>(), sp.GetService<EmbeddingClient>());
 });
 
 // Add services to the container.
@@ -104,8 +107,5 @@ using (var scope = app.Services.CreateScope())
     }
     DbInitializer.Initialize(context);
 }
-
-// init semantic memory
-app.InitSemanticMemory();
 
 app.Run();
