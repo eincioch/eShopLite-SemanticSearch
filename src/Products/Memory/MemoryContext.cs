@@ -66,8 +66,6 @@ public class MemoryContext
                 };
                 var result = await _embeddingClient.GenerateEmbeddingAsync(productInfo);
 
-                _logger.LogInformation($"Product vector generated - Length: {result.Value.ToFloats().Length}");
-
                 productVector.Vector = result.Value.ToFloats();
                 var recordId = await _productsCollection.UpsertAsync(productVector);
                 _logger.LogInformation("Product added to memory: {Product} with recordId: {RecordId}", product.Name, recordId);
@@ -91,7 +89,8 @@ public class MemoryContext
         }
 
         var response = new SearchResponse();
-        Product? firstProduct = null;
+        response.Response = $"I don't know the answer for your question. Your question is: [{search}]";
+        Product? firstProduct = new Product();
         var responseText = "";
         try
         {
@@ -109,7 +108,7 @@ public class MemoryContext
             double searchScore = 0.0;
             await foreach (var searchItem in searchResults.Results)
             {
-                if (searchItem.Score > 0.4)
+                if (searchItem.Score > 0.5)
                 {
                     // product found, search the db for the product details                    
                     firstProduct = new Product
@@ -141,7 +140,7 @@ Include the found product information in the response to the user question.";
         new UserChatMessage(prompt)
     };
 
-            _logger.LogInformation("Chat history created: {ChatHistory}", JsonConvert.SerializeObject(messages));
+            _logger.LogInformation("{ChatHistory}", JsonConvert.SerializeObject(messages));
 
             var resultPrompt = await _chatClient.CompleteChatAsync(messages);
             responseText = resultPrompt.Value.Content[0].Text!;

@@ -1,5 +1,7 @@
+using Aspire.Azure.AI.OpenAI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using OpenAI;
 using OpenAI.Chat;
 using OpenAI.Embeddings;
@@ -35,7 +37,6 @@ builder.Services.AddSingleton<ChatClient>(serviceProvider =>
     {
         OpenAIClient client = serviceProvider.GetRequiredService<OpenAIClient>();
         chatClient = client.GetChatClient(chatDeploymentName);
-
     }
     catch (Exception exc)
     {
@@ -91,6 +92,7 @@ app.UseStaticFiles();
 
 // log Azure OpenAI resources
 app.Logger.LogInformation($"Azure OpenAI resources\n >> OpenAI Client Name: {azureOpenAiClientName}");
+AppContext.SetSwitch("OpenAI.Experimental.EnableOpenTelemetry", true);
 
 // manage db
 using (var scope = app.Services.CreateScope())
