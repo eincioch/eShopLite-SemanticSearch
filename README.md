@@ -128,10 +128,23 @@ In order to use existing models: gpt-4o-mini and text-embedding-ada-002, you nee
 Add a user secret with the configuration:
 
 ```bash
+cd src/Products
+
+dotnet user-secrets set "ConnectionStrings:openaidev" "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
+```
+
+If you are using Visual Studio 2022, you can also check the user secrets from the IDE. Right click on the `Products` project and select the `Manage User Secrets` option. You can add the following configuration in the IDE.
+
+```bash
 {
   "ConnectionStrings:openaidev": "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
 }
 ```
+
+In example:
+
+![create Codespace](./images/35UserSecretsFromVS2022.png)
+
 
 The `Products` project add the Azure OpenAI clients using the configuration from the User Secrets in the Dev Environment. If you want to use the services provided by the `AppHost`, open the the `program.cs`, and change this:
 
