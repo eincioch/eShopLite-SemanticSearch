@@ -35,8 +35,8 @@
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo dotnet workload update && sudo dotnet workload install aspire && sudo dotnet workload list && sudo dotnet dev-certs https --trust",
-	"postStartCommand": "sudo dotnet dev-certs https",
+	"postCreateCommand": "sudo dotnet workload update && sudo dotnet workload install aspire && sudo dotnet workload list && sudo dotnet dev-certs https && sudo dotnet dev-certs https --trust",
+	"postStartCommand": "",
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "vscode",
