@@ -1,3 +1,4 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,19 +59,24 @@ namespace Microsoft.Extensions.Hosting
                 logging.IncludeScopes = true;
             });
 
+            // enable openai telemetry
+            // AppContext.SetSwitch("OpenAI.Experimental.EnableOpenTelemetry", true);
+
             builder.Services.AddOpenTelemetry()
                 .WithMetrics(metrics =>
                 {
                     metrics.AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
-                        .AddRuntimeInstrumentation();
+                        .AddRuntimeInstrumentation()
+                        .AddMeter("OpenAI.*");
                 })
                 .WithTracing(tracing =>
                 {
                     tracing.AddAspNetCoreInstrumentation()
                         // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
                         //.AddGrpcClientInstrumentation()
-                        .AddHttpClientInstrumentation();
+                        .AddHttpClientInstrumentation()
+                        .AddSource("OpenAI.*");
                 });
 
             builder.AddOpenTelemetryExporters();
@@ -88,11 +94,11 @@ namespace Microsoft.Extensions.Hosting
             }
 
             // Uncomment the following lines to enable the Azure Monitor exporter (requires the Azure.Monitor.OpenTelemetry.AspNetCore package)
-            //if (!string.IsNullOrEmpty(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]))
-            //{
-            //    builder.Services.AddOpenTelemetry()
-            //       .UseAzureMonitor();
-            //}
+            if (!string.IsNullOrEmpty(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]))
+            {
+                builder.Services.AddOpenTelemetry()
+                   .UseAzureMonitor();
+            }
 
             return builder;
         }

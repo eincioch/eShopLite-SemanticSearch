@@ -21,10 +21,12 @@ properties:
       - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
         identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
     secrets:
+      - name: applicationinsights-connection-string
+        value: '{{ .Env.APPINSIGHTS_APPINSIGHTSCONNECTIONSTRING }}'
+      - name: connectionstrings--openai
+        value: '{{ .Env.OPENAI_CONNECTIONSTRING }}'
       - name: connectionstrings--sqldb
         value: Server=sql,1433;User ID=sa;Password={{ securedParameter "sql_password" }};TrustServerCertificate=true;Database=sqldb
-      - name: connectionstrings--openai
-        value: {{ .Env.OPENAI_CONNECTIONSTRING }}
   template:
     containers:
       - image: {{ .Image }}
@@ -32,6 +34,10 @@ properties:
         env:
           - name: AZURE_CLIENT_ID
             value: {{ .Env.MANAGED_IDENTITY_CLIENT_ID }}
+          - name: AI_ChatDeploymentName
+            value: gpt-4o-mini
+          - name: AI_embeddingsDeploymentName
+            value: text-embedding-ada-002
           - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
             value: "true"
           - name: HTTP_PORTS
@@ -42,10 +48,12 @@ properties:
             value: "true"
           - name: OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY
             value: in_memory
-          - name: ConnectionStrings__sqldb
-            secretRef: connectionstrings--sqldb
+          - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+            secretRef: applicationinsights-connection-string
           - name: ConnectionStrings__openai
             secretRef: connectionstrings--openai
+          - name: ConnectionStrings__sqldb
+            secretRef: connectionstrings--sqldb
     scale:
       minReplicas: 1
 tags:
