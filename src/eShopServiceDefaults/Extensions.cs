@@ -60,7 +60,7 @@ namespace Microsoft.Extensions.Hosting
             });
 
             // enable openai telemetry
-            // AppContext.SetSwitch("OpenAI.Experimental.EnableOpenTelemetry", true);
+            AppContext.SetSwitch("OpenAI.Experimental.EnableOpenTelemetry", true);
 
             builder.Services.AddOpenTelemetry()
                 .WithMetrics(metrics =>
