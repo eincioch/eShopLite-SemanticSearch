@@ -14,6 +14,7 @@
   - [Run locally](#run-locally)
   - [Run the solution](#run-the-solution)
   - [Local dev using an existing model](#local-development-using-an-existing-gpt-4o-model)
+  - [Telemetry with .NET Aspire and Azure Application Insights](#telemetry-with-net-aspire-and-azure-application-insights)
 - [Resources](#resources)
 - [Video Recordings](#video-recordings)
 - [Guidance](#guidance)
