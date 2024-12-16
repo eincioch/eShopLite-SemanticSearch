@@ -131,6 +131,8 @@ Follow these steps to run the project, locally or in CodeSpaces:
   dotnet run
   ````
 
+Check the [Video Resources](#resources) for a step-by-step on how to run this project.
+
 ## .NET Aspire Azure Resources creation
 
 When utilizing Azure resources in your local development environment, you need to:
@@ -249,4 +251,4 @@ You may want to consider additional security measures, such as:
 
 ### Video Recordings
 
-- Coming soon!
+[![Run eShopLite Semantic Search in Minutes with .NET Aspire & GitHub Codespaces 🚀](./images/90ytrunfromcodespaces.png)](https://youtu.be/T9HwjVIDPAE)
