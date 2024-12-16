@@ -13,6 +13,7 @@
 - Run solution
   - [Run locally](#run-locally)
   - [Run the solution](#run-the-solution)
+  - [.NET Aspire Azure Resources creation](#net-aspire-azure-resources-creation)
   - [Local dev using an existing model](#local-development-using-an-existing-gpt-4o-model)
   - [Telemetry with .NET Aspire and Azure Application Insights](#telemetry-with-net-aspire-and-azure-application-insights)
 - [Resources](#resources)
@@ -112,15 +113,56 @@ Follow these steps to run the project, locally or in CodeSpaces:
 
 - Navigate to the Aspire Host folder project using the command:
 
-```bash
-cd ./src/eShopAppHost/
-```
+  ```bash
+  cd ./src/eShopAppHost/
+  ```
+
+- If you are running the project in Codespaces, you need to run this command:
+
+  ```bash
+  dotnet dev-certs https --trust
+  ```
+
+- By default the AppHost project creates the necessary resources on Azure. Check the **[.NET Aspire Azure Resources creation](#net-aspire-azure-resources-creation)** section to learn how to configure the project to create Azure resources.
 
 - Run the project:
 
-```bash
-dotnet run
+  ```bash
+  dotnet run
+  ````
+
+## .NET Aspire Azure Resources creation
+
+When utilizing Azure resources in your local development environment, you need to:
+
+- Authenticate to the Azure Tenant where the resources will be created. Run the following command to connect with your Azure tenant:
+
+  ```bash
+  az login 
+  ```
+- Provide the necessary Configuration values are specified under the Azure section in the `eShopAppHost` project:
+
+  - CredentialSource: Delegates to the [AzureCliCredential](https://learn.microsoft.com/dotnet/api/azure.identity.azureclicredential).
+  - SubscriptionId: The Azure subscription ID.
+  - AllowResourceGroupCreation: A boolean value that indicates whether to create a new resource group.
+  - ResourceGroup: The name of the resource group to use.
+  - Location: The Azure region to use.
+
+Consider the following example for the *appsettings.json* file in the eShopAppHost project configuration:
+
+```json
+{
+  "Azure": {
+    "CredentialSource": "AzureCli",
+    "SubscriptionId": "<Your subscription id>",
+    "AllowResourceGroupCreation": true,
+    "ResourceGroup": "<Valid resource group name>",
+    "Location": "<Valid Azure location>"
+  }
+}
 ```
+
+Check [.NET Aspire Azure hosting integrations](https://learn.microsoft.com/en-us/dotnet/aspire/azure/local-provisioning#net-aspire-azure-hosting-integrations) for more information on how .NET Aspire create the necessary cloud resources for local development.
 
 ### Local development using an existing gpt-4o-mini and ada-002 model
 
@@ -134,32 +176,24 @@ cd src/Products
 dotnet user-secrets set "ConnectionStrings:openaidev" "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
 ```
 
-If you are using Visual Studio 2022, you can also check the user secrets from the IDE. Right click on the `Products` project and select the `Manage User Secrets` option. You can add the following configuration in the IDE.
+This Azure OpenAI service must contain:
 
-```bash
-{
-  "ConnectionStrings:openaidev": "Endpoint=https://<endpoint>.openai.azure.com/;Key=<key>;"
-}
-```
+- a `gpt-4o-mini` model named **gpt-4o-mini**
+- a `text-embedding-ada-002` model named **text-embedding-ada-002**
 
-In example:
-
-![create Codespace](./images/35UserSecretsFromVS2022.png)
-
-
-The `Products` project add the Azure OpenAI clients using the configuration from the User Secrets in the Dev Environment. If you want to use the services provided by the `AppHost`, open the the `program.cs`, and change this:
+To use these services, edit the the `program.cs`, and change this:
 
 ```csharp
-// Add Azure OpenAI client
-var azureOpenAiClientName = builder.Environment.IsDevelopment() ? "openaidev" : "openai";
+// in dev scenarios rename this to "openaidev", and check the documentation to reuse existing AOAI resources
+var azureOpenAiClientName = "openai";
 builder.AddAzureOpenAIClient(azureOpenAiClientName);
 ```
 
 to this:
 
 ```csharp
-// Add Azure OpenAI client
-var azureOpenAiClientName = "openai";
+// in dev scenarios rename this to "openaidev", and check the documentation to reuse existing AOAI resources
+var azureOpenAiClientName = "openaidev";
 builder.AddAzureOpenAIClient(azureOpenAiClientName);
 ```
 

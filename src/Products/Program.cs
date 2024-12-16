@@ -22,8 +22,8 @@ builder.Services.AddProblemDetails();
 // Add DbContext service
 builder.AddSqlServerDbContext<Context>("sqldb");
 
-// Add Azure OpenAI client
-var azureOpenAiClientName = builder.Environment.IsDevelopment() ? "openaidev" : "openai";
+// in dev scenarios rename this to "openaidev", and check the documentation to reuse existing AOAI resources
+var azureOpenAiClientName = "openai";
 builder.AddAzureOpenAIClient(azureOpenAiClientName);
 
 // get azure openai client and create Chat client from aspire hosting configuration

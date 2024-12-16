@@ -20,6 +20,7 @@ var sqldb = builder.AddSqlServer("sql")
 
 var products = builder.AddProject<Projects.Products>("products")
     .WithReference(sqldb)
+    .WaitFor(sqldb)
     .WithReference(appInsights)
     .WithReference(aoai)
     .WithEnvironment("AI_ChatDeploymentName", chatDeploymentName)
@@ -27,6 +28,7 @@ var products = builder.AddProject<Projects.Products>("products")
 
 var store = builder.AddProject<Projects.Store>("store")
     .WithReference(products)
+    .WaitFor(products)
     .WithReference(appInsights)
     .WithExternalHttpEndpoints();
 
