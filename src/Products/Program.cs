@@ -16,7 +16,6 @@ Environment.SetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_INVARIANT", "fal
 
 // add aspire service defaults
 builder.AddServiceDefaults();
-
 builder.Services.AddProblemDetails();
 
 // Add DbContext service
