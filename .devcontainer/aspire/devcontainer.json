@@ -23,8 +23,8 @@
 			}
 		}
 	},
-	"workspaceFolder": "/workspaces/dogfood",  // Empty directory for clean testing
-	"onCreateCommand": "sudo chown -R vscode:vscode /workspaces && dotnet new install Aspire.ProjectTemplates::*-*",
+	"workspaceFolder": "/workspaces//eShopLite-SemanticSearch",  // Empty directory for clean testing
+	"onCreateCommand": "sudo chown -R vscode:vscode /workspaces//eShopLite-SemanticSearch && dotnet new install Aspire.ProjectTemplates::*-*",
 	"postStartCommand": "dotnet dev-certs https --trust",
 	"forwardPorts": []
 }
