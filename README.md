@@ -183,7 +183,7 @@ This Azure OpenAI service must contain:
 - a `gpt-4o-mini` model named **gpt-4o-mini**
 - a `text-embedding-ada-002` model named **text-embedding-ada-002**
 
-To use these services, edit the the `program.cs`, and change this:
+To use these services, edit the `program.cs`, and change this:
 
 ```csharp
 // in dev scenarios rename this to "openaidev", and check the documentation to reuse existing AOAI resources
