@@ -139,8 +139,7 @@ public static class ProductEndpoints
                 return Results.Ok(result);
             })
             .WithName("AISearch")
-            .Produces<SearchResponse>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces<SearchResponse>(StatusCodes.Status200OK);
         #endregion
     }
 }

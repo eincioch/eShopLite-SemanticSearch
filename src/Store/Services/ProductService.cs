@@ -69,10 +69,21 @@ public class ProductService
             {
                 return await response.Content.ReadFromJsonAsync<SearchResponse>();
             }
+            else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                _logger.LogError($"Internal Server Error: {responseText}");
+                throw new Exception($"Internal Server Error: {responseText}");
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                _logger.LogWarning($"Not Found: {responseText}");
+                return null;
+            }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during Search.");
+            throw ex;
         }
 
         return new SearchResponse { Response = "No response" };

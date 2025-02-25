@@ -23,17 +23,24 @@
     </div>
     <hr />
     <p class="quote">@aiResponse</p>
-
-    @* Uncomment this to show elapsed time *@
-    @* <p class="smallquote">Elapsed Time: [@elapsedTime]</p> *@
 </div>
 
-
-@if (products == null)
+@if (isLoading)
 {
-    <p><em>Loading...</em></p>
+    <div class="loading">
+        <p><em>Loading...</em></p>
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 }
-else
+else if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+else if (products != null)
 {
     <table class="table">
         <thead>
@@ -65,13 +72,31 @@ else
     private string aiResponse = "";
     private string elapsedTime = "";
     private bool smartSearch = false;
+    private bool isLoading = false;
+    private string errorMessage = "";
 
     private async Task DoSearch(MouseEventArgs e)
     {
-        await Task.Delay(500);
-        var response = await ProductService.Search(searchTerm, smartSearch);
-        aiResponse = response.Response;
-        products = response.Products;
-        elapsedTime = response.ElapsedTime.ToString();
+        try
+        {
+            isLoading = true;
+            errorMessage = "";
+            products = null;
+            aiResponse = "";
+
+            await Task.Delay(500);
+            var response = await ProductService.Search(searchTerm, smartSearch);
+            aiResponse = response.Response!;
+            products = response.Products;
+            elapsedTime = response.ElapsedTime.ToString();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
 }
