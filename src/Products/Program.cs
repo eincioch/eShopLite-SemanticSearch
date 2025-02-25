@@ -1,7 +1,3 @@
-using Aspire.Azure.AI.OpenAI;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using OpenAI;
 using OpenAI.Chat;
 using OpenAI.Embeddings;
@@ -21,7 +17,7 @@ builder.Services.AddProblemDetails();
 // Add DbContext service
 builder.AddSqlServerDbContext<Context>("sqldb");
 
-// in dev scenarios rename this to "openaidev", and check the documentation to reuse existing AOAI resources
+// in local dev scenarios you can add a local user secret with the connection string to your resources, check the documentation to reuse existing AOAI resources
 var azureOpenAiClientName = "openai";
 builder.AddAzureOpenAIClient(azureOpenAiClientName);
 
@@ -107,6 +103,12 @@ using (var scope = app.Services.CreateScope())
         app.Logger.LogError(exc, "Error creating database");
     }
     DbInitializer.Initialize(context);
+
+    app.Logger.LogInformation("Start fill products in vector db");
+    var memoryContext = app.Services.GetRequiredService<MemoryContext>();
+    await memoryContext.InitMemoryContextAsync(context);
+    app.Logger.LogInformation("Done fill products in vector db");
+
 }
 
 app.Run();
